@@ -1,5 +1,7 @@
 package com.practice.productservice.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +16,8 @@ import com.practice.productservice.restclient.CouponClient;
 @RestController
 @RequestMapping("/productapi")
 public class ProductRestController {
+	
+	private static Logger logger = LoggerFactory.getLogger(ProductRestController.class);
 
 	@Autowired
 	private ProductRepo repo;
@@ -26,6 +30,7 @@ public class ProductRestController {
 		String code = product.getCouponCode();
 		Coupon coupon = couponClient.getCoupon(code);
 		product.setPrice(product.getPrice().subtract(coupon.getDiscount()));
+		logger.info("Slueth Check");
 		return repo.save(product);
 
 	}
